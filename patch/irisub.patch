@@ -1,0 +1,12 @@
+diff --git a/src/iri2020/src/irisub.for b/src/iri2020/src/irisub.for
+index 779c3a1..a821a30 100644
+--- a/src/iri2020/src/irisub.for
++++ b/src/iri2020/src/irisub.for
+@@ -2501,6 +2501,7 @@ c include only every second auroral boundary point (MLT=0,1,2..23)
+       OARR(89)=HNEA		! lower boundary in km of IRI profile
+       OARR(90)=HNEE		! upper boundary in km of IRI profile
+ 
++      oarr(100) = foF2  !< Michael Hirsch
+ 3330  CONTINUE
+ 
+ c output of solar indices used

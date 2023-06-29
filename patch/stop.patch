@@ -1,0 +1,62 @@
+diff --git a/src/iri2020/src/igrf.for b/src/iri2020/src/igrf.for
+index 3689466..1ce38cc 100644
+--- a/src/iri2020/src/igrf.for
++++ b/src/iri2020/src/igrf.for
+@@ -732,8 +732,7 @@ c 667    FORMAT('/var/www/omniweb/cgi/vitmo/IRI/',A13)
+         READ (IU, *, IOSTAT=IER, ERR=999) (GH(i),i=1,nm)
+         goto 888
+
+-999     if (mess) write(konsol,100) FOUT
+-100     FORMAT('Error while reading ',A13)
++999     if (mess) error stop 'Error while reading ' // FOUT
+
+ 888     CLOSE (IU)
+         RETURN
+diff --git a/src/iri2020/src/irifun.for b/src/iri2020/src/irifun.for
+index 1613859..ed9a7ad 100644
+--- a/src/iri2020/src/irifun.for
++++ b/src/iri2020/src/irifun.for
+@@ -10642,14 +10642,16 @@ c----------------------------------------------------------------
+
+         iytmp=yr*100+mm
+         if (iytmp.lt.iymst.or.iytmp.gt.iymend) then
+-               if(mess) write(konsol,8000) iytmp,iymst,iymend
++               if(mess) then
++                  write(konsol,8000) iytmp,iymst,iymend
+ 8000           format(1x,I10,'** OUT OF RANGE **'/,5x,
+      &  'The file IG_RZ.DAT which contains the indices Rz12',
+      &  ' and IG12'/5x,'currently only covers the time period',
+      &  ' (yymm) : ',I6,'-',I6)
+-               nmonth=-1
+-               error stop
++                 nmonth=-1
++                 error stop "IG_RZ.DAT out of date index range"
+                endif
++        endif
+
+                iyst=iymst/100
+                imst=iymst-iyst*100
+diff --git a/src/iri2020/src/irisub.for b/src/iri2020/src/irisub.for
+index afbce82..779c3a1 100644
+--- a/src/iri2020/src/irisub.for
++++ b/src/iri2020/src/irisub.for
+@@ -1307,9 +1307,7 @@ C
+
+         GOTO 4291
+
+-8448    WRITE(konsol,8449) FILNAM
+-8449    FORMAT(1X////,
+-     &    ' The file ',A30,'is not in your directory.')
++8448    error stop 'The file ' // FILNAM // ' is not in your directory.'
+         GOTO 3330
+ C
+ C LINEAR INTERPOLATION IN SOLAR ACTIVITY. IG12 used for foF2
+@@ -611,7 +611,7 @@ c
+ c-web- special for web version
+ c-web- messages should be turned off with mess=jf(34)=.false.
+
+-        KONSOL=6
++        KONSOL=0
+         if(.not.jf(12).and.mess) then
+                 konsol=11
+                 open(11,file='messages.txt')

@@ -10642,14 +10642,16 @@ c----------------------------------------------------------------
 
         iytmp=yr*100+mm
         if (iytmp.lt.iymst.or.iytmp.gt.iymend) then
-               if(mess) write(konsol,8000) iytmp,iymst,iymend
+               if(mess) then
+                  write(konsol,8000) iytmp,iymst,iymend
 8000           format(1x,I10,'** OUT OF RANGE **'/,5x,
      &  'The file IG_RZ.DAT which contains the indices Rz12',
      &  ' and IG12'/5x,'currently only covers the time period',
      &  ' (yymm) : ',I6,'-',I6)
-               nmonth=-1
-               return
+                 nmonth=-1
+                 error stop "IG_RZ.DAT out of date index range"
                endif
+        endif
 
 		iyst=iymst/100
 		imst=iymst-iyst*100

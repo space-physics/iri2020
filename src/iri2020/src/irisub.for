@@ -611,7 +611,7 @@ c
 c-web- special for web version
 c-web- messages should be turned off with mess=jf(34)=.false.
 
-        KONSOL=6
+        KONSOL=0
         if(.not.jf(12).and.mess) then
                 konsol=11
                 open(11,file='messages.txt')
@@ -1307,9 +1307,7 @@ C
 
         GOTO 4291
 
-8448    WRITE(konsol,8449) FILNAM
-8449    FORMAT(1X////,
-     &    ' The file ',A30,'is not in your directory.')
+8448    error stop 'The file ' // FILNAM // ' is not in your directory.'
         GOTO 3330
 C
 C LINEAR INTERPOLATION IN SOLAR ACTIVITY. IG12 used for foF2
@@ -2503,6 +2501,7 @@ c include only every second auroral boundary point (MLT=0,1,2..23)
       OARR(89)=HNEA		! lower boundary in km of IRI profile
       OARR(90)=HNEE		! upper boundary in km of IRI profile
 
+      oarr(100) = foF2  !< Michael Hirsch
 3330  CONTINUE
 
 c output of solar indices used

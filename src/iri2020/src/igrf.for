@@ -732,8 +732,7 @@ c 667    FORMAT('/var/www/omniweb/cgi/vitmo/IRI/',A13)
         READ (IU, *, IOSTAT=IER, ERR=999) (GH(i),i=1,nm)
         goto 888
 
-999     if (mess) write(konsol,100) FOUT
-100     FORMAT('Error while reading ',A13)
+999     if (mess) error stop 'Error while reading ' // FOUT
 
 888     CLOSE (IU)
         RETURN
