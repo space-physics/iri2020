@@ -175,7 +175,7 @@ C     2      1.0km     1.0km  1.0km  1.0km    100km   500km
 C
 c-----------------------------------------------------------------------
 
-        dimension       step(6),hr(6)
+        dimension       step(6),hr(6), outf(20,1000),oarr(100)
         logical     	jf(50)
 
 c turning off computations that are not needed for integration
