@@ -88,6 +88,6 @@ The [Examples](./Examples) directory has simple example use with plots.
 
 ## Data files
 
-`src/iri2020/data/index/{apf107,ig_rz}.dat` are
+`src/iri2020/data/` are
 [regularly updated](http://irimodel.org/indices/).
 Currently we don't auto-update those.

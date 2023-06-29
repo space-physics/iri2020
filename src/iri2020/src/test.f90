@@ -16,6 +16,8 @@ do i = 2,Nalt
   altkm(i) = altkm(i-1) + alt_km_range(3)
 enddo
 
+call read_ig_rz
+call readapf107
 
 call IRI_SUB(JF,JMAG,glat,glon,IYYYY,MMDD,DHOUR+25., &
      alt_km_range(1), alt_km_range(2), alt_km_range(3), &
