@@ -20,7 +20,7 @@ c
 c  May, 2008
 c
 c  Includes subroutines vfjmodelroc, vfjmodelrocinit, fjlin22dex,
-c  fjlocate, vfjmodelrocstart 
+c  fjlocate, vfjmodelrocstart
 c ----------------------------------------------------------------
 c Input arguments:
 c        f107 - daily solar flux
@@ -39,9 +39,9 @@ c        CALL vfjmodelrocinit( f107, idoy )
 c    3) retrieve vertical drift parsing hour and geographic longitude
 c        CALL vfjmodelroc(ttl,gglon,viv)
 c
-c 2020.10 04/30/22 added subroutine arguments to incop. into IRI 
-c 2020.10 04/30/22 deleted blanks in main data statement 
-c 2020.10 04/30/22 included fjrocdata.h in vfjmodelrocstart  
+c 2020.10 04/30/22 added subroutine arguments to incop. into IRI
+c 2020.10 04/30/22 deleted blanks in main data statement
+c 2020.10 04/30/22 included fjrocdata.h in vfjmodelrocstart
 c
 c ----------------------------------------------------------------
 
@@ -81,14 +81,14 @@ c-------------------------------------------------------------
 c  initialize data array for solar activity and day of year
 c-------------------------------------------------------------
       real seas(4),sfl(11)
-      
+
       data seas /   59., 120., 243., 304. /
       data sfl /   100., 110., 120., 130., 140.,
      &             150., 160., 170., 180., 190., 200.  /
 
       doy=idoy
 c	  if(0.lt.doy .and. doy.le.seas(1)) then
-	  	jseas= 1
+      jseas= 1
       if(doy.gt.seas(1).and.doy.le.seas(2)) then
 	    jseas= 2
 	  else if(doy.gt.seas(2).and.doy.le.seas(3)) then
@@ -211,7 +211,7 @@ c  initialize drift arrays and fill in missing values.
 c-------------------------------------------------------------
 c
        dimension fjrocvz(59,25,4,11),vzm(59,25,4,11)
-       
+
        data (fjrocvz(it, 1,1, 1), it=1,59) /
      &-10.831,-10.619,-10.484,-10.820,-11.596,-11.695,
      &-12.857,-14.141,-15.304,-16.786,-15.644,-9.367,
@@ -13418,7 +13418,7 @@ c
       MLON1=25
       MLT1=59
       MLT=58
-c 
+c
       do 40 is= 1,MSOL
         do 40 isn= 1,MSN
           do 40 il= 1,MLON1

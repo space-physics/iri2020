@@ -1,4 +1,4 @@
-program iri2016_driver
+program iri_driver
 
 use, intrinsic:: iso_fortran_env, only: stderr=>error_unit, stdout=>output_unit
 
