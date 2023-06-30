@@ -18,6 +18,8 @@ real, allocatable :: altkm(:)
 character(1024) :: argv
 integer :: i
 
+!> jf switch description: https://irimodel.org/IRI-Switches-options.pdf
+
 jf = .true.
 !> jf(4:6) = .false. iri2020 default
 jf(4:6) = .false.
