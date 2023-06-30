@@ -1,8 +1,10 @@
 from __future__ import annotations
-from .profile import timeprofile
-
 from argparse import ArgumentParser
 from datetime import timedelta
+import logging
+
+
+from .profile import timeprofile
 
 
 def main(time: list[str], alt_km: list[float], glat: float, glon: float):
@@ -21,7 +23,11 @@ def cli():
         nargs=3,
         default=(100, 200, 20),
     )
+    p.add_argument("-v", "--verbose", action="store_true")
     P = p.parse_args()
+
+    if P.verbose:
+        logging.basicConfig(level=logging.DEBUG)
 
     iono = main(P.time, P.alt_km, *P.latlon)
 

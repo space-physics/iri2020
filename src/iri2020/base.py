@@ -54,6 +54,8 @@ def IRI(time: str | datetime, altkmrange: list[float], glat: float, glon: float)
 
         logging.info(" ".join(cmd))
         ret = subprocess.check_output(cmd, text=True, cwd=data_path)
+
+    logging.debug(ret)
     if not ret:
         raise RuntimeError("IRI failed to run correctly--gave empty text output")
     # %% get altitude profile data
