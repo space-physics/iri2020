@@ -25,13 +25,18 @@ def IRI(time: str | datetime, altkmrange: list[float], glat: float, glon: float)
         glon, (int, float)
     ), "glat, glon is scalar"
     # %% build IRI executable if needed
-    iri_name = "iri_driver"
+    iri_name = "iri2020_driver"
     if os.name == "nt":
         iri_name += ".exe"
 
-    build()
     # %% run IRI
-    with impr.as_file(impr.files(__package__).joinpath(iri_name)) as exe:
+    with impr.as_file(impr.files(__package__).joinpath(iri_name)) as exe, impr.as_file(
+        impr.files(__package__).joinpath("data")
+    ) as data_path:
+
+        if not exe.is_file():
+            build()
+
         cmd = [
             str(exe),
             str(time.year),
@@ -45,11 +50,10 @@ def IRI(time: str | datetime, altkmrange: list[float], glat: float, glon: float)
             str(altkmrange[0]),
             str(altkmrange[1]),
             str(altkmrange[2]),
-            str(exe.parent / "data"),
         ]
 
         logging.info(" ".join(cmd))
-        ret = subprocess.check_output(cmd, text=True)
+        ret = subprocess.check_output(cmd, text=True, cwd=data_path)
     if not ret:
         raise RuntimeError("IRI failed to run correctly--gave empty text output")
     # %% get altitude profile data

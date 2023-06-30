@@ -1,7 +1,5 @@
 from __future__ import annotations
 from .profile import timeprofile
-from matplotlib.pyplot import show
-from .plots import timeprofile as plot_time
 
 from argparse import ArgumentParser
 from datetime import timedelta
@@ -27,8 +25,14 @@ def cli():
 
     iono = main(P.time, P.alt_km, *P.latlon)
 
-    plot_time(iono)
-    show()
+    try:
+        from matplotlib.pyplot import show
+        from .plots import timeprofile as plot_time
+
+        plot_time(iono)
+        show()
+    except ImportError as e:
+        raise SystemExit(f"Skipped plotting tests {e}")
 
 
 if __name__ == "__main__":

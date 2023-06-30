@@ -1,0 +1,67 @@
+name: ci
+
+env:
+  CMAKE_BUILD_TYPE: Release
+
+on:
+  push:
+    paths:
+    - "**.py"
+    - ".github/workflows/ci.yml"
+
+jobs:
+
+  core:
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ['3.9', '3.11']
+
+    env:
+      FC: gfortran-12
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+
+    - run: pip install .[tests,lint]
+      timeout-minutes: 2
+
+    - run: flake8
+    - run: mypy
+
+    - run: pytest
+
+  windows:
+      needs: core
+      runs-on: windows-latest
+      timeout-minutes: 10
+
+      steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc-fortran
+      # Github actions Gfortran in default image is messed up.
+
+      - name: Put MSYS2_MinGW64 on PATH
+        run: echo "${{ runner.temp }}/msys64/mingw64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - uses: actions/checkout@v3
+
+      - run: python -m pip install .[tests,lint]
+
+      - run: flake8
+      - run: mypy
+
+      - run: pytest -v

@@ -37,12 +37,12 @@ def cli():
 
     try:
         from matplotlib.pyplot import show
-        import iri2020.plots as piri
+        from .plots import latprofile as plot_lat
 
-        piri.latprofile(iono)
+        plot_lat(iono)
         show()
-    except ImportError:
-        pass
+    except ImportError as e:
+        raise SystemExit(f"Skipped plotting tests {e}")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 # IRI2020 ionosphere model from Python and Matlab
 
 [![image](https://zenodo.org/badge/DOI/10.5281/zenodo.240895.svg)](https://doi.org/10.5281/zenodo.240895)
-![Actions Status](https://github.com/space-physics/iri2020/workflows/ci/badge.svg)
+[![ci](https://github.com/space-physics/iri2020/actions/workflows/ci.yml/badge.svg)](https://github.com/space-physics/iri2020/actions/workflows/ci.yml)
 [![View iri2020 on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/81056-iri2020)
 [![PyPi version](https://img.shields.io/pypi/pyversions/iri2020.svg)](https://pypi.python.org/pypi/iri2020)
 [![PyPi Download stats](https://static.pepy.tech/badge/iri2020)](https://pepy.tech/project/iri2020)

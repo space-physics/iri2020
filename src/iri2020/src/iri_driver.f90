@@ -1,4 +1,4 @@
-program iri2016_driver
+program iri_driver
 
 use, intrinsic:: iso_fortran_env, only: stderr=>error_unit, stdout=>output_unit
 
@@ -12,8 +12,6 @@ integer :: ymdhms(6)
 real:: alt_km_range(3)
 real::  TECtotal, TECtop, TECbot
 
-character(:), allocatable :: datadir
-
 
 real :: oarr(100), outf(20,1000)
 real, allocatable :: altkm(:)
@@ -21,15 +19,26 @@ character(1024) :: argv
 integer :: i
 
 jf = .true.
+!> jf(4:6) = .false. iri2020 default
 jf(4:6) = .false.
+!> jf(22) = .false. units m^-3
+!> jf(23) = .false. iri2020 default
 jf(22:23) = .false.
-jf(26) = .true.  ! jf(26) == jf(8) == .true. for foF2
-jf(28:30) = .false.
-jf(33:35) = .false.
+!> jf(30) = .false. iri2020 default
+jf(30) = .false.
+!> jf(33,35) = .false. iri2020 default
+jf(33) = .false.
+!> jf(34) = .false. messages off
+jf(34) = .true.
+jf(35) = .false.
+!> jf(39,40) = .false. iri2020 default
+jf(39:40) = .false.
+!> jf(47) = .false. iri2020 default
+jf(47) = .false.
 
 ! --- command line input
-if (command_argument_count() < 12) then
-  write(stderr,*) 'need input parameters: year month day hour minute second glat glon min_alt_km max_alt_km step_alt_km datadir'
+if (command_argument_count() /= 11) then
+  write(stderr,*) 'need input parameters: year month day hour minute second glat glon min_alt_km max_alt_km step_alt_km'
   stop 1
 endif
 
@@ -49,9 +58,6 @@ do i = 1,3
   read(argv,*) alt_km_range(i)
 enddo
 
-call get_command_argument(12, argv)
-datadir = trim(argv)
-
 ! --- parse
 Nalt = int((alt_km_range(2) - alt_km_range(1)) / alt_km_range(3)) + 1
 allocate(altkm(Nalt))
@@ -68,9 +74,12 @@ dhour = ymdhms(4) + ymdhms(5) / 60. + ymdhms(6) / 3600.
 
 !print *, "entering iri_sub"
 
+call read_ig_rz
+call readapf107
+
 call IRI_SUB(JF,JMAG,glat,glon,IYYYY,MMDD,DHOUR+25., &
      alt_km_range(1), alt_km_range(2), alt_km_range(3), &
-     OUTF,OARR, datadir)
+     OUTF,OARR)
 
 !print *, "entering iri_tec"
 
