@@ -10,10 +10,10 @@ integer :: iyyyy, mmdd, Nalt
 real :: glat, glon, dhour
 integer :: ymdhms(6)
 real:: alt_km_range(3)
-real::  TECtotal, TECtop, TECbot
 
 
 real :: oarr(100), outf(20,1000)
+real :: tecbo, tecto
 real, allocatable :: altkm(:)
 character(1024) :: argv
 integer :: i
@@ -79,17 +79,20 @@ dhour = ymdhms(4) + ymdhms(5) / 60. + ymdhms(6) / 3600.
 call read_ig_rz
 call readapf107
 
-call IRI_SUB(JF,JMAG,glat,glon,IYYYY,MMDD,DHOUR+25., &
+call IRI_SUB(JF, JMAG, glat, glon, IYYYY, MMDD, DHOUR+25., &
      alt_km_range(1), alt_km_range(2), alt_km_range(3), &
      OUTF,OARR)
 
-!print *, "entering iri_tec"
+!> from irisub.f90:iri_web()
+!> IRI2020 call method is totally different from IRI2016.
 
-! --- for TEC
-call iri_tec(alt_km_range(1), alt_km_range(2), 2,&
-             TECtotal, TECtop, TECbot)
-oarr(37) = TECtotal  ! tec-units (10^16 m^-2)
-oarr(38) = TECtop ! % of total
+call IRITEC(glat, glon, jmag, jf, iyyyy, mmdd, dhour+25., &
+            0., alt_km_range(2), 0.1, &
+            oarr, tecbo, tecto)
+
+! print *, "TRACE: ", tecbo, tecto
+oarr(37) = tecbo + tecto
+oarr(38) = tecto / oarr(37) * 100
 
 !print '(A,ES10.3,A,F5.1,A)','NmF2 ',oarr(1),' [m^-3]     hmF2 ',oarr(2),' [km] '
 !print '(A,F10.3,A,I3,A,F10.3)','F10.7 ',oarr(41), ' Ap ',int(oarr(51)),' B0 ',oarr(10)
